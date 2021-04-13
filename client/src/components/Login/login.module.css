@@ -1,0 +1,29 @@
+.loginImage {
+  height: 20vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 100vw;
+}
+.loginLogo {
+  height: 23vh;
+}
+
+.loginPage {
+  margin: 1rem 0;
+}
+
+.loginNameBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
