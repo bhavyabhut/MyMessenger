@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import style from "./login.module.css";
 import io from "socket.io-client";
 import { Input, Button, notification } from "antd";
@@ -12,9 +13,9 @@ import { ReactComponent as Logo6 } from "../../image/upDraw/undraw_Traveling_re_
 import { ReactComponent as Logo7 } from "../../image/upDraw/undraw_Video_streaming_re_v3qg.svg";
 import { ReactComponent as Logo8 } from "../../image/upDraw/undraw_well_done_i2wr.svg";
 
-const socket = io("http://localhost:5000", {
-  transports: ["websocket", "polling"],
-});
+// const socket = io("http://localhost:5000", {
+//   transports: ["websocket", "polling"],
+// });
 
 const initialNotification = {
   isNotify: false,
@@ -22,7 +23,10 @@ const initialNotification = {
   type: "",
 };
 
-function Login() {
+// 0 for success
+// 1 for error
+
+function Login({ isSocketConnected, socket }) {
   const [msg, setMsg] = useState();
   const [id, setId] = useState();
   const [myData, setMyData] = useState();
@@ -30,78 +34,43 @@ function Login() {
   const [name, setName] = useState();
   const [loading, setLoading] = useState(false);
 
+  const history = useHistory();
+
   const [notificationState, setNotification] = useState(initialNotification);
 
+  const showNotification = (newType, msg) => {
+    let type = "";
+    if (newType === 0) type = "success";
+    if (newType === 1) type = "error";
+    setNotification({ isNotify: true, msg, type });
+  };
+
   useEffect(() => {
-    socket.on("getData", (data) => console.log(data));
+    // socket.on("getData", (data) => console.log(data));
     socket.on("login_error", (data) => {
       console.log(data);
       setLoading(false);
-      setNotification({
-        isNotify: true,
-        msg: data,
-        type: "error",
-      });
+      showNotification(1, data);
     });
-    socket.on("new_user", (data) => setAllUsers(data));
+    // socket.on("new_user", (data) => setAllUsers(data));
     socket.on("login_success", (data) => {
       setLoading(false);
-
-      setMyData(data.myData);
-      setAllUsers(data.allUser);
-      console.log(data);
-      setNotification({
-        isNotify: true,
-        msg: "Success full Join ",
-        type: "success",
-      });
+      // setMyData(data.myData);
+      // setAllUsers(data.allUser);
+      // console.log(data);
+      showNotification(0, "Success full Join");
+      history.push("/app");
     });
   }, []);
   const submit = () => {
+    if (!isSocketConnected) {
+      showNotification(1, "Socket is not connected!");
+      return;
+    }
     setLoading(true);
     socket.emit("login", { name });
   };
 
-  // return (
-  //   <>
-  //     {myData ? (
-  //       <>
-  //         <h2>Welcome {myData.name}</h2>
-
-  //         {allUsers &&
-  //           allUsers.length > 0 &&
-  //           allUsers
-  //             .filter((d) => d.id !== myData.id)
-  //             .map((user) => {
-  //               return (
-  //                 <>
-  //                   <li>{user.name}</li>
-  //                 </>
-  //               );
-  //             })}
-  //       </>
-  //     ) : (
-  //       <>
-  //         <input
-  //           value={id}
-  //           type="text"
-  //           onChange={(e) => {
-  //             setId(e.target.value);
-  //           }}
-  //         ></input>
-  //         <input
-  //           value={msg}
-  //           type="text"
-  //           onChange={(e) => {
-  //             setMsg(e.target.value);
-  //           }}
-  //         ></input>
-
-  //         <button onClick={submit}> Submit</button>
-  //       </>
-  //     )}
-  //   </>
-  // );
   useEffect(() => {
     if (notificationState.isNotify) {
       notification.open({

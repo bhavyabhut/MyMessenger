@@ -1,0 +1,7 @@
+{
+    "name": "My_Message",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+  }

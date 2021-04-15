@@ -1,0 +1,8 @@
+{
+    "appId": "io.ionic.My_Message",
+    "appName": "My_Message",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {}
+  }

@@ -2,42 +2,64 @@ import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import io from "socket.io-client";
 import Login from "../components/Login";
+import Dashboard from "../components/Dashboard";
 import NoPageFound from "../components/NoPageFound";
 
-const socket = io("http://localhost:5000", {
+const socket = io("http://localhost:5000/", {
   transports: ["websocket", "polling"],
 });
 
-function App() {
-  const [msg, setMsg] = useState();
-  const [id, setId] = useState();
-  const [myData, setMyData] = useState();
-  const [allUsers, setAllUsers] = useState();
+const initialNotification = {
+  isNotify: false,
+  msg: "",
+  type: "",
+};
 
-  // useEffect(() => {
-  //   getData();
-  // }, [videoRef]);
+function App() {
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
+  const [notificationState, setNotification] = useState(initialNotification);
+
+  const showNotification = (newType, msg) => {
+    let type = "";
+    if (newType === 0) type = "success";
+    if (newType === 1) type = "error";
+    setNotification({ isNotify: true, msg, type });
+  };
 
   useEffect(() => {
-    socket.on("getData", (data) => console.log(data));
-    socket.on("login_error", (data) => console.log(data));
-    socket.on("new_user", (data) => setAllUsers(data));
-    socket.on("login_success", (data) => {
-      setMyData(data.myData);
-      setAllUsers(data.allUser);
+    if (socket.connected) {
+      setIsSocketConnected(true);
+    }
+    if (!socket.connected) {
+      showNotification(1, "Network Error");
+      setIsSocketConnected(false);
+    }
+
+    socket.on("connect", () => {
+      setIsSocketConnected(true);
     });
+    socket.on("disconnect", (data) => {
+      console.log("aaaaaaaaaaaaa", data);
+      setIsSocketConnected(false);
+      showNotification(1, "Opps! Socket disconnected");
+    });
+
+    // socket.on("reconnect", () => {
+    //   //Your Code Here
+    //   console.log("reconnected");
+    // });
   }, []);
-  const submit = () => {
-    socket.emit("login", { name: id });
-  };
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Login />
+          <Login isSocketConnected={isSocketConnected} socket={socket} />
         </Route>
         <Route exact path="/login">
-          <Login />
+          <Login isSocketConnected={isSocketConnected} socket={socket} />
+        </Route>
+        <Route path="/app">
+          <Dashboard isSocketConnected={isSocketConnected} socket={socket} />
         </Route>
         <Route>
           <NoPageFound />
