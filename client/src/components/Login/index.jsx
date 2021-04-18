@@ -48,7 +48,7 @@ function Login({ isSocketConnected, socket }) {
   useEffect(() => {
     // socket.on("getData", (data) => console.log(data));
     socket.on("login_error", (data) => {
-      console.log(data);
+      console.log("ogin_error", data);
       setLoading(false);
       showNotification(1, data);
     });
