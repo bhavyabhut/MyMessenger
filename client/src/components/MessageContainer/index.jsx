@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { SendOutlined } from "@ant-design/icons";
 import SeenTick from "../SeenTick";
-import { Input, Button, notification } from "antd";
+import { Input, Button, notification, Menu, Dropdown } from "antd";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import Scrollbar from "react-smooth-scrollbar";
+import Avatar from "react-avatar";
 
 const initialNotification = {
   isNotify: false,
@@ -18,6 +19,7 @@ const MessageContainer = ({ socket, allUsers }) => {
   const [msg, setMsg] = useState();
   const [allMsg, setAllMsg] = useState([]);
   const [notificationState, setNotification] = useState(initialNotification);
+  const [theme, setTheme] = useState("white");
 
   const messageEl = useRef();
 
@@ -88,8 +90,47 @@ const MessageContainer = ({ socket, allUsers }) => {
     }
   }, []);
 
+  const changeTheme = (e) => {
+    console.log(e.key, e.domEvent.target.id);
+    if (e.key === "item_0") setTheme("white");
+    if (e.key === "item_1") setTheme("yellow");
+    if (e.key === "item_2") setTheme("pink");
+    if (e.key === "item_3") setTheme("love");
+  };
+
+  const menu = (
+    <Menu onClick={changeTheme}>
+      <Menu.Item id="white">
+        {/* <Avatar textSizeRatio={2} size="32" round color="white" /> */}
+        <span style={{ marginLeft: "5px" }}>White</span>
+      </Menu.Item>
+      <Menu.Item id="yellow">
+        {/* <Avatar textSizeRatio={2} size="32" round color="blue" /> */}
+        <span style={{ marginLeft: "5px" }}>Yellow</span>
+      </Menu.Item>
+      <Menu.Item id="pink">
+        {/* <Avatar textSizeRatio={2} size="32" round color="pink" /> */}
+        <span style={{ marginLeft: "5px" }}>Pink</span>
+      </Menu.Item>
+      <Menu.Item id="love">
+        {/* <Avatar textSizeRatio={2} size="32" round color="lightpink" /> */}
+        <span style={{ marginLeft: "5px" }}>Love</span>
+      </Menu.Item>
+    </Menu>
+  );
+
+  // background: url("./image/Whatsapp-Wallpaper-022.jpg") center no-repeat;
+
   return (
-    <div style={{ height: "100%", backgroundColor: "white" }}>
+    <div
+      className="chatImage"
+      style={{
+        height: "100%",
+        // backgroundColor: "white",
+        backgroundImage: `url("/image/${theme}.jpg")`,
+        backgroundSize: "100% 100%",
+      }}
+    >
       <div className="chat">
         <div className="messages" ref={messageEl}>
           {allMsg &&
@@ -143,6 +184,11 @@ const MessageContainer = ({ socket, allUsers }) => {
             })}
         </div>
         <div className="footer">
+          <div style={{ marginRight: "1rem " }}>
+            <Dropdown overlay={menu} placement="topCenter">
+              <Button>Change Theme</Button>
+            </Dropdown>
+          </div>
           <Input
             placeholder="Type something..."
             value={msg}

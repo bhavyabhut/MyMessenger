@@ -1,6 +1,6 @@
 .loginImage {
-  height: 23vh;
-  width: 100vw;
+  height: 23%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,16 +9,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  width: 100vw;
+  height: 50%;
+  width: 100%;
 }
 .loginLogo {
-  height: 23vh;
+  height: 100%;
 }
 
 .loginPage {
   /* margin-top: 1rem; */
   /* color: rgb(32, 218, 32); */
+  width: 100%;
+  height: 100%;
 }
 
 .loginNameBox {
@@ -27,4 +29,16 @@
   align-items: center;
   justify-content: center;
   margin: auto;
+}
+
+.welcome {
+  color: blue;
+  font-size: 2.5rem;
+  text-align: center;
+}
+@media only screen and (max-width: 600px) {
+  .welcome {
+    font-size: 1.5rem;
+    text-align: center;
+  }
 }

@@ -13,10 +13,6 @@ import { ReactComponent as Logo6 } from "../../image/upDraw/undraw_Traveling_re_
 import { ReactComponent as Logo7 } from "../../image/upDraw/undraw_Video_streaming_re_v3qg.svg";
 import { ReactComponent as Logo8 } from "../../image/upDraw/undraw_well_done_i2wr.svg";
 
-// const socket = io("http://localhost:5000", {
-//   transports: ["websocket", "polling"],
-// });
-
 const initialNotification = {
   isNotify: false,
   msg: "",
@@ -27,10 +23,6 @@ const initialNotification = {
 // 1 for error
 
 function Login({ isSocketConnected, socket }) {
-  const [msg, setMsg] = useState();
-  const [id, setId] = useState();
-  const [myData, setMyData] = useState();
-  const [allUsers, setAllUsers] = useState();
   const [name, setName] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -46,18 +38,13 @@ function Login({ isSocketConnected, socket }) {
   };
 
   useEffect(() => {
-    // socket.on("getData", (data) => console.log(data));
     socket.on("login_error", (data) => {
       console.log("ogin_error", data);
       setLoading(false);
       showNotification(1, data);
     });
-    // socket.on("new_user", (data) => setAllUsers(data));
     socket.on("login_success", (data) => {
       setLoading(false);
-      // setMyData(data.myData);
-      // setAllUsers(data.allUser);
-      // console.log(data);
       showNotification(0, "Success full Join");
       history.push("/app");
     });

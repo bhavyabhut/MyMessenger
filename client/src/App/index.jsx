@@ -145,7 +145,11 @@ function App({ isSocketConnected, socket }) {
         </div>
       </Sider>
       <Layout className="site-layout">
-        <Header>Header</Header>
+        <Header>
+          <span style={{ color: "white", float: "right" }}>
+            Welcome {myUser && myUser.name}
+          </span>
+        </Header>
         <Content className="site-layout-background">
           <Switch>
             <Route path="/app/" exact>
