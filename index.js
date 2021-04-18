@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
   getAllMsgById(socket, io);
   disconnected(socket, io);
 });
-
-server.listen("5000", () => {
-  console.log("server is running o 5000");
+const port = process.env || 3000;
+server.listen(port, () => {
+  console.log(`server is running on ${port}`);
 });
