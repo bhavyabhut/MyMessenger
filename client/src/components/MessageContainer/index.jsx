@@ -194,6 +194,9 @@ const MessageContainer = ({ socket, allUsers }) => {
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
             className="sendInput"
+            onKeyPress={(e) => {
+              if (e.key == "Enter") sendMsg();
+            }}
           />
           <Button
             type="primary"

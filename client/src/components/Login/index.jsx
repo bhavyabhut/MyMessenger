@@ -86,6 +86,9 @@ function Login({ isSocketConnected, socket }) {
             onChange={(e) => {
               setName(e.target.value);
             }}
+            onKeyPress={(e) => {
+              if (e.key == "Enter") submit();
+            }}
           />
           <Button
             loading={loading}
