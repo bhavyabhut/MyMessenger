@@ -5,7 +5,7 @@ import Login from "../components/Login";
 import App from "./index";
 import NoPageFound from "../components/NoPageFound";
 
-const socket = io("https://your-secure-messenger.herokuapp.com/", {
+const socket = io("http://localhost:5000/", {
   transports: ["websocket", "polling"],
 });
 
