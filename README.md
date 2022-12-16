@@ -1,7 +1,5 @@
 # Your Secure Messenger
 
-## [Live](https://www.bhavya.xyz/) demo
-## [Open Chat](https://your-secure-messenger.herokuapp.com/) demo
 
 #### Technology stack
 - Socket.io
